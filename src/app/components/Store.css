@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background-800 text-white;
+}
+
+.custom-card {
+    @apply cursor-pointer flex justify-center bg-white shadow-lg m-0 relative overflow-hidden p-4 rounded-xl flex-col;
+    transition: all 0.3s ease;
+  }
+  
+
+.custom-card:hover {
+  @apply transform scale-105;
+}
+
+.image-style {
+  @apply w-full h-auto object-cover transition-opacity duration-300;
+  min-height: 290px;
+}
+.image-style:hover {
+  @apply opacity-80;
+}

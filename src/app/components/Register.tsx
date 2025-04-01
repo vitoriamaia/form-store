@@ -10,20 +10,20 @@ import { z } from "zod";
 
 const schema = z
   .object({
-    fullname: z.string().min(3, "Nome completo é obrigatório"),
-    email: z.string().email("Email inválido"),
+    fullname: z.string().min(3, "Full name is required."),
+    email: z.string().email("Invalid email."),
     password: z
       .string()
-      .min(8, "A senha deve ter no mínimo 8 caracteres")
-      .regex(/\d/, "A senha deve conter pelo menos um número")
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, "A senha deve conter pelo menos um caractere especial"),
+      .min(8, "The password must be at least 8 characters long.")
+      .regex(/\d/, "The password must contain at least one number")
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, "he password must contain at least one speacial character"),
     confirmPassword: z.string(),
     age: z.number().optional().refine((value) => value === undefined || value >= 18, {
-      message: "Você deve ter pelo menos 18 anos",
+      message: "You must be at least 18 years old",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem",
+    message: "Passwords do not match.",
     path: ["confirmPassword"],
   });
 
@@ -58,7 +58,7 @@ const Register = () => {
     // Simulando o envio dos dados
     setTimeout(() => {
       console.log(data);
-      toast.success("Cadastro realizado com sucesso!");
+      toast.success("Registration successful!");
       navigate("/Store");
     }, 1000);
   };
@@ -70,12 +70,12 @@ const Register = () => {
   return (
     <section className="container mx-auto py-12">
       <div className="max-w-4xl mx-auto flex justify-center rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-bold">Registro</h1>
+        <h1 className="text-2xl font-bold">Register</h1>
       </div>
       <div className="w-full max-w-md mx-auto p-4">
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           {[
-            { name: "fullname", type: "text", placeholder: "Nome Completo" },
+            { name: "fullname", type: "text", placeholder: "FullName" },
             { name: "email", type: "email", placeholder: "Email" },
           ].map(({ name, type, placeholder }) => (
             <div key={name} className="relative">
@@ -100,14 +100,14 @@ const Register = () => {
             <input
               {...register("age", { valueAsNumber: true })}
               type="number"
-              placeholder="Idade"
-              aria-label="Idade"
+              placeholder="Age"
+              aria-label="Age"
               className={`w-full px-4 py-2 border rounded ${errors.age ? "border-red-500" : ""}`}
             />
             {errors.age && <p className="text-red-500">{errors.age.message}</p>}
           </div>
 
-          {[{ name: "password", placeholder: "Senha" }].map(({ name, placeholder }) => (
+          {[{ name: "password", placeholder: "Password" }].map(({ name, placeholder }) => (
             <div key={name} className="relative">
               <input
                 {...register(name as keyof FormFields)}
@@ -130,8 +130,8 @@ const Register = () => {
             <input
               {...register("confirmPassword")}
               type={showPassword ? "text" : "password"}
-              placeholder="Confirme sua senha"
-              aria-label="Confirme sua senha"
+              placeholder="Confirm your password"
+              aria-label="Confirm your password"
               className={`w-full px-4 py-2 border rounded pr-10 ${
                 confirmPassword && confirmPassword !== password ? "border-red-500" : ""
               }`}
@@ -140,7 +140,7 @@ const Register = () => {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
             {confirmPassword && confirmPassword !== password && (
-              <p className="text-red-500">As senhas não coincidem</p>
+              <p className="text-red-500">The passwords not match</p>
             )}
           </div>
 
@@ -151,7 +151,7 @@ const Register = () => {
               !isValid || Object.keys(dirtyFields).length === 0 ? "bg-gray-400" : "bg-blue-600"
             }`}
           >
-            {isSubmitting ? "Enviando..." : "Enviar"}
+            {isSubmitting ? "Loading..." : "Register"}
           </button>
         </form>
 
